@@ -10,8 +10,8 @@ type BaseProps = {
 };
 
 const variants = {
-  primary: "border-[var(--gold)] bg-[var(--gold)] text-[var(--void)] hover:bg-[var(--champagne)]",
-  outline: "border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--void)]",
+  primary: "border-[var(--gold)] bg-[var(--gold)] text-[var(--ivory)] hover:border-[var(--ivory)] hover:bg-[var(--ivory)] hover:text-[var(--void)]",
+  outline: "border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--ivory)]",
   ghost: "border-[var(--border)] text-[var(--champagne)] hover:border-[var(--gold)] hover:text-[var(--gold)]"
 };
 

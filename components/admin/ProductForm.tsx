@@ -34,7 +34,7 @@ export function ProductForm({ product }: { product?: Product }) {
 
 function ImageUploader() {
   return (
-    <div className="rounded-[6px] border border-dashed border-[var(--border)] bg-[var(--void)] p-5">
+    <div className="rounded-[6px] border border-dashed border-[var(--border)] bg-[var(--surface-2)] p-5">
       <p className="text-sm font-medium text-[var(--ivory)]">Product images</p>
       <p className="mt-2 text-sm text-[var(--champagne)]/65">Drag-drop upload wiring is ready for Supabase Storage. Add project keys before enabling writes.</p>
     </div>

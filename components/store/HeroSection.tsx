@@ -1,14 +1,11 @@
 import Image from "next/image";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@/components/ui/Button";
-import { products } from "@/lib/data";
 
 export function HeroSection() {
-  const heroProduct = products[0];
-
   return (
-    <section className="mx-page grid min-h-[calc(100dvh-4rem)] items-center gap-10 py-14 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
-      <div className="max-w-2xl">
+    <section className="mx-page grid items-center gap-8 py-10 lg:grid-cols-[0.78fr_1.22fr] lg:py-12">
+      <div className="relative z-10 max-w-2xl">
         <p className="mb-6 max-w-sm border-l border-[var(--gold)] pl-4 text-sm leading-6 text-[var(--champagne)]/75">
           Handcrafted oxidised silver jewelry from Rs. 99, made for Indian everyday rituals and festive light.
         </p>
@@ -27,25 +24,17 @@ export function HeroSection() {
           </ButtonLink>
         </div>
       </div>
-      <div className="relative">
-        <div className="absolute -left-4 top-8 hidden h-40 w-px bg-[var(--gold)]/55 lg:block" />
-        <div className="tarnish-reveal relative mx-auto aspect-[3/4] w-full max-w-[520px] overflow-hidden rounded-[6px] border border-[var(--border)] bg-[var(--surface)]">
+      <div className="relative min-h-[360px] overflow-visible lg:min-h-[600px]">
+        <div className="absolute -left-16 top-1/2 hidden h-36 w-px -translate-y-1/2 bg-[var(--gold)]/55 xl:-left-24 lg:block" />
+        <div className="tarnish-reveal hero-character-stage absolute inset-y-0 -left-4 -right-4 my-auto h-full lg:-left-8 lg:-right-12">
           <Image
-            src={heroProduct.images[0]}
-            alt="Oxidised Mirayaa earrings catching warm light"
+            src="/mirayaa-hero-character-fit.png"
+            alt="Illustrated Mirayaa brand muse wearing handcrafted earrings"
             fill
             priority
-            sizes="(min-width: 1024px) 45vw, 90vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 58vw, 96vw"
+            className="object-contain object-right drop-shadow-[0_24px_45px_rgba(70,53,28,0.18)]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-transparent to-transparent" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
-            <div>
-              <p className="font-display text-3xl text-[var(--ivory)]">{heroProduct.name}</p>
-              <p className="font-mono-price text-sm text-[var(--gold)]">Rs. {heroProduct.price}</p>
-            </div>
-            <p className="max-w-32 text-right text-xs leading-5 text-[var(--champagne)]/72">Oxidised Affairs launch piece</p>
-          </div>
         </div>
       </div>
     </section>

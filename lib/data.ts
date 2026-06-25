@@ -24,6 +24,14 @@ export const categories: Category[] = [
     description: "Traditional studs with contemporary soul, made for everyday glow.",
     imageUrl: jewelryImages[2],
     displayOrder: 2
+  },
+  {
+    id: "cat-daily",
+    name: "Daily Wears",
+    slug: "daily-wears",
+    description: "Lightweight everyday earrings for college, work, and quick plans.",
+    imageUrl: jewelryImages[4],
+    displayOrder: 3
   }
 ];
 
@@ -95,7 +103,7 @@ export const products: Product[] = [
     images: [jewelryImages[4], jewelryImages[2]],
     category: "desi-elegance",
     stock: 30,
-    isFeatured: false,
+    isFeatured: true,
     tags: ["Under Rs. 100"],
     material: "Fashion alloy, enamel",
     weightGrams: 8
@@ -109,7 +117,7 @@ export const products: Product[] = [
     images: [jewelryImages[0], jewelryImages[4]],
     category: "desi-elegance",
     stock: 16,
-    isFeatured: false,
+    isFeatured: true,
     tags: ["Everyday"],
     material: "Fashion alloy, enamel",
     weightGrams: 9
@@ -123,7 +131,7 @@ export const products: Product[] = [
     images: [jewelryImages[1], jewelryImages[2]],
     category: "oxidised-affairs",
     stock: 12,
-    isFeatured: false,
+    isFeatured: true,
     tags: ["Temple"],
     material: "Oxidised alloy",
     weightGrams: 14
@@ -137,7 +145,7 @@ export const products: Product[] = [
     images: [jewelryImages[2], jewelryImages[3]],
     category: "oxidised-affairs",
     stock: 18,
-    isFeatured: false,
+    isFeatured: true,
     tags: ["Under Rs. 100"],
     material: "Oxidised alloy",
     weightGrams: 10

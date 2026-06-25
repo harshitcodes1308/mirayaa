@@ -19,7 +19,7 @@ No generic AI gradient cards, floating blobs, purple-blue tech palettes, stock b
 ## Design Principles
 - Let product imagery and materiality carry the brand before decoration does.
 - Keep the interface sharp and editorial: low radii, thin rules, clear hierarchy, no soft template cards.
-- Use gold as a glint, not a blanket; the dark oxidised base stays in charge.
+- Use gold as a glint, not a blanket; ivory daylight carries the surface while oxidised ink preserves the metal mood.
 - Build for thumb-first shopping on Indian mobile networks, with fast scanning and stable layouts.
 - Make craft feel accessible: premium presentation, honest prices, no artificial scarcity.
 

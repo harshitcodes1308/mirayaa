@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --void: oklch(13% 0.014 53);
-  --surface: oklch(18% 0.018 54);
-  --surface-2: oklch(22% 0.018 54);
-  --border: oklch(29% 0.015 52);
-  --gold: oklch(74% 0.088 84);
-  --gold-muted: oklch(58% 0.071 82);
-  --champagne: oklch(90% 0.034 77);
-  --ivory: oklch(96% 0.018 78);
+  color-scheme: light;
+  --void: oklch(97% 0.006 92);
+  --surface: oklch(93% 0.012 82);
+  --surface-2: oklch(89% 0.014 78);
+  --border: oklch(72% 0.018 70);
+  --gold: oklch(59% 0.105 82);
+  --gold-muted: oklch(49% 0.078 78);
+  --champagne: oklch(43% 0.026 58);
+  --ivory: oklch(20% 0.017 54);
   --blush: oklch(84% 0.052 52);
   --success: oklch(58% 0.078 151);
   --error: oklch(61% 0.13 25);
@@ -33,8 +33,9 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 72% 8%, oklch(36% 0.046 72 / 0.18), transparent 26rem),
-    linear-gradient(180deg, oklch(13% 0.014 53), oklch(10% 0.012 51) 58%, oklch(15% 0.016 53));
+    radial-gradient(circle at 78% 4%, oklch(78% 0.06 83 / 0.18), transparent 28rem),
+    radial-gradient(circle at 9% 18%, oklch(88% 0.022 38 / 0.24), transparent 22rem),
+    linear-gradient(180deg, oklch(97% 0.006 92), oklch(94% 0.01 86) 56%, oklch(96% 0.006 92));
   color: var(--ivory);
   font-family: var(--font-body), system-ui, sans-serif;
   min-height: 100dvh;
@@ -46,12 +47,12 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 60;
-  opacity: 0.07;
+  opacity: 0.045;
   background-image:
-    linear-gradient(115deg, transparent 0 42%, oklch(100% 0 0 / 0.12) 44%, transparent 46%),
-    radial-gradient(circle at 30% 20%, oklch(100% 0 0 / 0.16) 0 1px, transparent 1px);
-  background-size: 180px 180px, 5px 5px;
-  mix-blend-mode: overlay;
+    linear-gradient(115deg, transparent 0 42%, oklch(38% 0.018 60 / 0.08) 44%, transparent 46%),
+    radial-gradient(circle at 30% 20%, oklch(32% 0.02 60 / 0.16) 0 1px, transparent 1px);
+  background-size: 220px 220px, 6px 6px;
+  mix-blend-mode: multiply;
 }
 
 a {
@@ -68,7 +69,7 @@ select {
 
 ::selection {
   background: var(--gold);
-  color: var(--void);
+  color: var(--ivory);
 }
 
 .mx-page {
@@ -155,6 +156,10 @@ select {
 
   .group:hover .collection-image {
     transform: scale(1.025);
+  }
+
+  .group:hover .moment-arrow {
+    transform: translateX(0.25rem);
   }
 }
 

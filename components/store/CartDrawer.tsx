@@ -18,7 +18,7 @@ export function CartDrawer() {
 
   return (
     <div className="fixed inset-0 z-50">
-      <button className="absolute inset-0 bg-black/62 backdrop-blur-sm" onClick={closeCart} aria-label="Close cart overlay" />
+      <button className="absolute inset-0 bg-[color:oklch(20%_0.017_54/0.34)] backdrop-blur-sm" onClick={closeCart} aria-label="Close cart overlay" />
       <aside className="absolute inset-y-0 right-0 flex w-full flex-col border-l border-[var(--border)] bg-[var(--surface)] sm:max-w-md">
         <div className="flex h-16 items-center justify-between border-b border-[var(--border)] px-5">
           <p className="font-display text-3xl">Your Cart</p>
@@ -36,7 +36,7 @@ export function CartDrawer() {
             <div className="grid gap-5">
               {items.map((item) => (
                 <div key={item.product.id} className="grid grid-cols-[72px_1fr] gap-4 border-b border-[var(--border)] pb-5">
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-[6px] bg-[var(--void)]">
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-[6px] bg-[var(--surface-2)]">
                     <Image src={item.product.images[0]} alt={item.product.name} fill sizes="72px" className="object-cover" />
                   </div>
                   <div>

@@ -1,23 +1,24 @@
 # Mirayaa Design System
 
 ## Overview
-Mirayaa uses an oxidised-metal visual system: near-black surfaces, champagne text, restrained antique gold, sharp editorial edges, and product-led portrait imagery. Motion is tactile and purposeful, with the signature tarnish reveal reserved for hero and collection/product image moments.
+Mirayaa uses an Ivory Daylight visual system: true ivory grounds, smoked pearl surfaces, oxidised ink text, restrained antique gold, sharp editorial edges, and product-led portrait imagery. Motion is tactile and purposeful, with the signature tarnish reveal reframed as a silver-polish reveal reserved for hero and collection/product image moments.
 
 ## Color
 Tokens use OKLCH in code while preserving the master prompt's hex intent.
 
-- Void: near-black warm metal, primary page background.
-- Surface: dark brown-black, used for navigation, drawers, admin panels, and form surfaces.
-- Border: low-contrast oxidised edge.
+- Void: true ivory/off-white, primary page background.
+- Surface: smoked pearl/champagne, used for navigation, drawers, admin panels, and form surfaces.
+- Border: oxidised taupe linework.
 - Gold: antique highlight for price, focus, CTAs, and rules.
-- Champagne/Ivory: readable text on dark.
+- Ivory: deep oxidised ink for primary text.
+- Champagne: muted metal-brown for body text.
 - Blush: limited warmth for collection badges and soft highlights.
 - Success/Error: muted status colors only.
 
 ## Typography
-- Display: Cormorant Garamond via `next/font/google`, only for hero headlines, collection titles, and product names.
-- Body: DM Sans via `next/font/google`, for UI and readable copy.
-- Mono: JetBrains Mono via `next/font/google`, only prices, IDs, and compact operational labels.
+- Display: Cormorant Garamond stack, only for hero headlines, collection titles, and product names.
+- Body: DM Sans stack, for UI and readable copy.
+- Mono: JetBrains Mono stack, only prices, IDs, and compact operational labels.
 
 ## Layout
 - Max content width: 1400px.
