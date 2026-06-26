@@ -4,10 +4,10 @@ import { products } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
 
 const stats = [
-  ["Total Orders", "128"],
-  ["Revenue", formatPrice(42680)],
+  ["Total Orders", "0"],
+  ["Revenue", formatPrice(0)],
   ["Products Live", String(products.length)],
-  ["Low Stock", String(products.filter((product) => product.stock < 10).length)]
+  ["Low Stock", "0"]
 ];
 
 export default function AdminPage() {
