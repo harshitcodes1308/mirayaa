@@ -6,12 +6,42 @@ import { categories as fallbackCategories } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 function slugify(value: string) {
   return value
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+function setupMessage(error: unknown) {
+  const rawMessage = error instanceof Error ? error.message : String(error);
+  const lowerMessage = rawMessage.toLowerCase();
+
+  if (
+    lowerMessage.includes("could not find the table") ||
+    lowerMessage.includes("relation") ||
+    lowerMessage.includes("schema cache") ||
+    lowerMessage.includes("does not exist")
+  ) {
+    return "Supabase tables are missing. Run supabase/migrations/001_init.sql in Supabase SQL Editor, then run supabase/migrations/002_product_images_storage.sql.";
+  }
+
+  if (lowerMessage.includes("row-level security")) {
+    return "Supabase blocked this save with row-level security. Add SUPABASE_SERVICE_ROLE_KEY in Vercel, or run the admin policies from the migrations.";
+  }
+
+  return rawMessage;
+}
+
+function errorRedirectPath(formData: FormData, message: string) {
+  const id = String(formData.get("id") ?? "");
+  const slug = String(formData.get("slug") ?? "").trim();
+  const path = id && uuidPattern.test(id) ? `/admin/products/${id}` : slug ? `/admin/products/${slug}` : "/admin/products/new";
+
+  return `${path}?error=${encodeURIComponent(message)}`;
 }
 
 async function getDbClient() {
@@ -93,37 +123,43 @@ async function revalidateCatalog() {
 }
 
 export async function saveProduct(formData: FormData) {
-  const id = String(formData.get("id") ?? "");
-  const payload = readProductPayload(formData);
-  const supabase = await getDbClient();
-  const categoryId = await ensureCategory(payload.category);
+  try {
+    const rawId = String(formData.get("id") ?? "");
+    const id = uuidPattern.test(rawId) ? rawId : "";
+    const payload = readProductPayload(formData);
+    const supabase = await getDbClient();
+    const categoryId = await ensureCategory(payload.category);
 
-  const row = {
-    name: payload.name,
-    slug: payload.slug,
-    description: payload.description,
-    price: payload.price,
-    compare_price: payload.compare_price,
-    images: payload.images,
-    category_id: categoryId,
-    stock: payload.stock,
-    is_active: payload.is_active,
-    is_featured: payload.is_featured,
-    tags: payload.tags,
-    material: payload.material,
-    weight_grams: payload.weight_grams,
-    updated_at: new Date().toISOString()
-  };
+    const row = {
+      name: payload.name,
+      slug: payload.slug,
+      description: payload.description,
+      price: payload.price,
+      compare_price: payload.compare_price,
+      images: payload.images,
+      category_id: categoryId,
+      stock: payload.stock,
+      is_active: payload.is_active,
+      is_featured: payload.is_featured,
+      tags: payload.tags,
+      material: payload.material,
+      weight_grams: payload.weight_grams,
+      updated_at: new Date().toISOString()
+    };
 
-  const result = id
-    ? await supabase.from("products").update(row).eq("id", id)
-    : await supabase.from("products").insert(row);
+    const result = id
+      ? await supabase.from("products").update(row).eq("id", id)
+      : await supabase.from("products").insert(row);
 
-  if (result.error) {
-    redirect(`/admin/products/new?error=${encodeURIComponent(result.error.message)}`);
+    if (result.error) {
+      throw new Error(result.error.message);
+    }
+
+    await revalidateCatalog();
+    revalidatePath(`/product/${payload.slug}`);
+  } catch (error) {
+    redirect(errorRedirectPath(formData, setupMessage(error)));
   }
 
-  await revalidateCatalog();
-  revalidatePath(`/product/${payload.slug}`);
   redirect("/admin/products");
 }

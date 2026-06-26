@@ -5,10 +5,12 @@ import { saveProduct } from "@/lib/admin/product-actions";
 import { categories } from "@/lib/data";
 import type { Product } from "@/types";
 
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export function ProductForm({ product, error }: { product?: Product; error?: string }) {
   return (
     <form action={saveProduct} className="grid gap-5 border border-[var(--border)] bg-[var(--surface)] p-5">
-      {product?.id ? <input type="hidden" name="id" value={product.id} /> : null}
+      {product?.id && uuidPattern.test(product.id) ? <input type="hidden" name="id" value={product.id} /> : null}
       <div className="grid gap-4 md:grid-cols-2">
         <Input name="name" defaultValue={product?.name} placeholder="Product name" required />
         <Input name="slug" defaultValue={product?.slug} placeholder="Slug" />
