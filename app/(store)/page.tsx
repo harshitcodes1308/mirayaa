@@ -4,40 +4,44 @@ import { ArrowRight, Star } from "@phosphor-icons/react/dist/ssr";
 import { HeroSection } from "@/components/store/HeroSection";
 import { ProductGrid } from "@/components/store/ProductGrid";
 import { ButtonLink } from "@/components/ui/Button";
-import { categories, products } from "@/lib/data";
+import { getCatalogCategories, getCatalogProducts } from "@/lib/catalog";
+import { products as fallbackProducts } from "@/lib/data";
 
-const featured = products.filter((product) => product.isFeatured);
 const careNotes = [
   ["Oxidised finish", "Antique-toned surfaces that catch light softly instead of shouting shine."],
   ["Lightweight wear", "Everyday silhouettes that sit comfortably through college days, office hours, and festive evenings."],
   ["Care ritual", "Keep pieces away from perfume and water; store them dry in a pouch after wear."]
 ];
 
-const shopMoments = [
-  {
-    title: "College Ethnic Day",
-    copy: "Small jhumkas and easy studs that feel festive without weighing the day down.",
-    href: "/shop?price=0-99",
-    product: products.find((product) => product.slug === "mini-boho-bloom") ?? products[0],
-    cue: "From Rs. 99"
-  },
-  {
-    title: "Festive Evenings",
-    copy: "Statement drops with enough glint for sarees, kurtas, and wedding corners.",
-    href: "/shop?category=oxidised-affairs&price=200",
-    product: products.find((product) => product.slug === "the-royal-sparkle") ?? products[0],
-    cue: "Rs. 199-249"
-  },
-  {
-    title: "Gifting Under Rs. 249",
-    copy: "Polished little pieces that feel personal, thoughtful, and easy to wrap.",
-    href: "/shop?sort=price-desc",
-    product: products.find((product) => product.slug === "aparna-jhumka") ?? products[0],
-    cue: "Under Rs. 249"
-  }
-];
+export default async function HomePage() {
+  const [categories, products] = await Promise.all([getCatalogCategories(), getCatalogProducts()]);
+  const featured = products.filter((product) => product.isFeatured);
+  const newArrivals = featured.length ? featured : products;
+  const displayProducts = products.length ? products : fallbackProducts;
+  const shopMoments = [
+    {
+      title: "College Ethnic Day",
+      copy: "Small jhumkas and easy studs that feel festive without weighing the day down.",
+      href: "/shop?price=0-99",
+      product: displayProducts.find((product) => product.slug === "mini-boho-bloom") ?? displayProducts[0],
+      cue: "From Rs. 99"
+    },
+    {
+      title: "Festive Evenings",
+      copy: "Statement drops with enough glint for sarees, kurtas, and wedding corners.",
+      href: "/shop?category=oxidised-affairs&price=200",
+      product: displayProducts.find((product) => product.slug === "the-royal-sparkle") ?? displayProducts[0],
+      cue: "Rs. 199-249"
+    },
+    {
+      title: "Gifting Under Rs. 249",
+      copy: "Polished little pieces that feel personal, thoughtful, and easy to wrap.",
+      href: "/shop?sort=price-desc",
+      product: displayProducts.find((product) => product.slug === "aparna-jhumka") ?? displayProducts[0],
+      cue: "Under Rs. 249"
+    }
+  ];
 
-export default function HomePage() {
   return (
     <main>
       <HeroSection />
@@ -67,7 +71,7 @@ export default function HomePage() {
             View All <ArrowRight size={16} />
           </Link>
         </div>
-        <ProductGrid products={featured.slice(0, 8)} />
+        <ProductGrid products={newArrivals.slice(0, 8)} />
       </section>
 
       <section className="mx-page py-6 lg:py-10">
@@ -111,7 +115,7 @@ export default function HomePage() {
           <div className="grid gap-5 md:grid-cols-[0.82fr_1fr] md:items-stretch">
             <div className="relative min-h-80 overflow-hidden rounded-[6px] border border-[var(--border)]">
               <Image
-                src={products[2].images[0]}
+                src={(displayProducts[2] ?? displayProducts[0]).images[0]}
                 alt="Oxidised Mirayaa earrings for care and storage"
                 fill
                 sizes="(min-width: 768px) 35vw, 100vw"

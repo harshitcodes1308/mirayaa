@@ -1,9 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { products, categories } from "@/lib/data";
+import { getCatalogCategories, getCatalogProducts } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 
-export default function AdminProductsPage() {
+export default async function AdminProductsPage() {
+  const [products, categories] = await Promise.all([
+    getCatalogProducts({ includeDrafts: true }),
+    getCatalogCategories()
+  ]);
+
   return (
     <section>
       <div className="mb-8 flex items-end justify-between gap-4">

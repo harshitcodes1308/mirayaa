@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { OrderTable } from "@/components/admin/OrderTable";
-import { products } from "@/lib/data";
+import { getCatalogProducts } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 
-const stats = [
-  ["Total Orders", "0"],
-  ["Revenue", formatPrice(0)],
-  ["Products Live", String(products.length)],
-  ["Low Stock", "0"]
-];
+export default async function AdminPage() {
+  const products = await getCatalogProducts();
+  const stats = [
+    ["Total Orders", "0"],
+    ["Revenue", formatPrice(0)],
+    ["Products Live", String(products.length)],
+    ["Low Stock", "0"]
+  ];
 
-export default function AdminPage() {
   return (
     <section>
       <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">

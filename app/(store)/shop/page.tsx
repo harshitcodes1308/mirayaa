@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ProductGrid } from "@/components/store/ProductGrid";
 import { Badge } from "@/components/ui/Badge";
-import { categories, products } from "@/lib/data";
+import { getCatalogCategories, getCatalogProducts } from "@/lib/catalog";
 
 type SearchParams = Promise<{ category?: string; price?: string; sort?: string }>;
 
@@ -10,6 +10,7 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
   const activeCategory = params.category;
   const activePrice = params.price;
   const sort = params.sort ?? "newest";
+  const [categories, products] = await Promise.all([getCatalogCategories(), getCatalogProducts()]);
 
   let visible = products.filter((product) => {
     const categoryMatch = activeCategory ? product.category === activeCategory : true;

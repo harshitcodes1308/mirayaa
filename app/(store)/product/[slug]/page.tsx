@@ -4,18 +4,19 @@ import { notFound } from "next/navigation";
 import { AddToCartButton } from "@/components/store/AddToCartButton";
 import { ProductGrid } from "@/components/store/ProductGrid";
 import { Badge } from "@/components/ui/Badge";
-import { categories, getProduct, products } from "@/lib/data";
+import { getCatalogCategories, getCatalogProduct, getCatalogProducts } from "@/lib/catalog";
+import { products as fallbackProducts } from "@/lib/data";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
+  return fallbackProducts.map((product) => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getCatalogProduct(slug);
   if (!product) return {};
 
   return {
@@ -32,7 +33,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const [product, categories, products] = await Promise.all([
+    getCatalogProduct(slug),
+    getCatalogCategories(),
+    getCatalogProducts()
+  ]);
   if (!product) notFound();
 
   const category = categories.find((item) => item.slug === product.category);
