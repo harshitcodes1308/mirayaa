@@ -18,12 +18,11 @@ function safeFileName(name: string) {
   return `${baseName || "mirayaa-product"}-${crypto.randomUUID()}.${extension}`;
 }
 
-async function ensureBucket() {
+async function ensureBucket(supabaseAdmin: ReturnType<typeof createAdminClient>) {
   if (!hasServiceRoleKey) {
     return;
   }
 
-  const supabaseAdmin = createAdminClient();
   const { data } = await supabaseAdmin.storage.getBucket(bucket);
 
   if (data) {
@@ -68,7 +67,38 @@ export async function POST(request: Request) {
   }
 
   try {
-    await ensureBucket();
+    const storageClient = hasServiceRoleKey ? createAdminClient() : supabase;
+
+    if (hasServiceRoleKey) {
+      await ensureBucket(storageClient);
+    }
+
+    const uploaded: { path: string; url: string }[] = [];
+
+    for (const file of files) {
+      const path = `products/${safeFileName(file.name)}`;
+      const { error } = await storageClient.storage.from(bucket).upload(path, file, {
+        cacheControl: "31536000",
+        contentType: file.type,
+        upsert: false
+      });
+
+      if (error) {
+        const lowerMessage = error.message.toLowerCase();
+        const message = lowerMessage.includes("bucket")
+          ? `Supabase Storage bucket "${bucket}" is missing. Create it in Supabase Storage or add SUPABASE_SERVICE_ROLE_KEY in Vercel so the app can create it automatically.`
+          : lowerMessage.includes("row-level security")
+            ? "Supabase blocked this upload with Storage RLS. Add SUPABASE_SERVICE_ROLE_KEY in Vercel, or run the storage policy migration for authenticated uploads."
+            : error.message;
+
+        return NextResponse.json({ message }, { status: 500 });
+      }
+
+      const { data } = storageClient.storage.from(bucket).getPublicUrl(path);
+      uploaded.push({ path, url: data.publicUrl });
+    }
+
+    return NextResponse.json({ files: uploaded });
   } catch (error) {
     return NextResponse.json(
       {
@@ -80,28 +110,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-
-  const uploaded: { path: string; url: string }[] = [];
-
-  for (const file of files) {
-    const path = `products/${safeFileName(file.name)}`;
-    const { error } = await supabase.storage.from(bucket).upload(path, file, {
-      cacheControl: "31536000",
-      contentType: file.type,
-      upsert: false
-    });
-
-    if (error) {
-      const message = error.message.toLowerCase().includes("bucket")
-        ? `Supabase Storage bucket "${bucket}" is missing. Create it in Supabase Storage or add SUPABASE_SERVICE_ROLE_KEY in Vercel so the app can create it automatically.`
-        : error.message;
-
-      return NextResponse.json({ message }, { status: 500 });
-    }
-
-    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-    uploaded.push({ path, url: data.publicUrl });
-  }
-
-  return NextResponse.json({ files: uploaded });
 }
