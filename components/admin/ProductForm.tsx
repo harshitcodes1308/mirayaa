@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
+import { ProductImageUploader } from "@/components/admin/ProductImageUploader";
 import { categories } from "@/lib/data";
 import type { Product } from "@/types";
 
@@ -23,20 +24,11 @@ export function ProductForm({ product }: { product?: Product }) {
           ))}
         </select>
       </div>
-      <ImageUploader />
+      <ProductImageUploader defaultImages={product?.images} />
       <div className="flex flex-col gap-3 sm:flex-row">
         <Button variant="primary" type="button">Save & Publish</Button>
         <Button variant="ghost" type="button">Save as Draft</Button>
       </div>
     </form>
-  );
-}
-
-function ImageUploader() {
-  return (
-    <div className="rounded-[6px] border border-dashed border-[var(--border)] bg-[var(--surface-2)] p-5">
-      <p className="text-sm font-medium text-[var(--ivory)]">Product images</p>
-      <p className="mt-2 text-sm text-[var(--champagne)]/65">Drag-drop upload wiring is ready for Supabase Storage. Add project keys before enabling writes.</p>
-    </div>
   );
 }
